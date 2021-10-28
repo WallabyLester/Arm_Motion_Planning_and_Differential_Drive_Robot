@@ -1,0 +1,11 @@
+box_l: 0.5
+box_w: 0.3
+box_h: 0.1
+box_m: 5.0
+
+wheel_h: 0.04
+wheel_r: 0.15
+wheel_m: 0.2
+
+caster_r: 0.05
+caster_m: 0.005
