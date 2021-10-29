@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/wiki/xacro" name="ddrive">
 
+<xacro:include filename="$(find diff_drive)/urdf/ddrive.gazebo.xacro"/>
+
 <xacro:property name="ddrive" value="$(find diff_drive)/config/ddrive.yaml" />
 <xacro:property name="config" value="${load_yaml(ddrive)}" />
 
@@ -105,10 +107,10 @@
 <joint name="caster_top" type="fixed">
     <origin xyz="-0.1875 0 0.1" rpy="0 0 0" />
     <parent link="chassis" />
-    <child link="caster_top" />
+    <child link="top_caster" />
 </joint>
 
-<link name="caster_top">
+<link name="top_caster">
     <visual>
     <origin rpy="${pi/2} 0 0" xyz="0 0 0" />
         <geometry>
@@ -130,10 +132,10 @@
 <joint name="caster_bottom" type="fixed">
     <origin xyz="-0.1875 0 -0.1" rpy="0 0 0" />
     <parent link="chassis" />
-    <child link="caster_bottom" />
+    <child link="bottom_caster" />
 </joint>
 
-<link name="caster_bottom">
+<link name="bottom_caster">
     <visual>
     <origin rpy="${pi/2} 0 0" xyz="0 0 0" />
         <geometry>
