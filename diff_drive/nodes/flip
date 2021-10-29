@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+"""
+Publishes velocity messages to make a robot flip over itself.
+
+PUBLISHERS: 
+    
+
+SUBSCRIBERS:
+    
+
+BROADCASTERS:
+    
+
+"""
+
+import rospy
+from nav_msgs.msg import Odometry 
+import tf2_ros
+from tf_conversions import transformations
+from geometry_msgs.msg import TransformStamped, Twist, Vector3
+from sensor_msgs.msg import JointState
+
+class Flip():
+    """ Publish velocity messages to the robot at a fixed rate
+    
+    """
+    def __init__(self):
+        self.odom = rospy.Subscriber('/diff/odom', Odometry, self.callback)
+        self.pub = rospy.Publisher("/diff/cmd_vel", Twist, queue_size=10)
+
+        self.rate = rospy.Rate(100)
+        self.x = 0
+        self.y = 0
+        self.orient = 0
+        
+    def callback(self, data):
+        """ Callback function for diff/odom topic
+
+        Subscribes to the odometry of the robot 
+
+        Args:
+            data: linear and twist data from the robot 
+        
+        """
+        self.x = data.pose.pose.position.x
+        self.y = data.pose.pose.position.y
+        self.orient = data.pose.pose.orientation.y
+
+    def velocity(self):
+        movement = Twist(linear = Vector3(x = 1, y = 0, z = 0), angular = Vector3(x = 0, y = 0, z = 0))
+        self.pub.publish(movement)
+
+
+if __name__ == '__main__':
+    rospy.init_node("flip", log_level=rospy.DEBUG)
+    flip = Flip()
+    flip.velocity()
+    rospy.spin()
