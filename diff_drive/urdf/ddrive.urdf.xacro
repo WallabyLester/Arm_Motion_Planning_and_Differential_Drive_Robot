@@ -39,17 +39,23 @@
             <box size="${box_l} ${box_w} ${box_h}" />
         </geometry>
         <material name="black"/>
-        <inertial>
-            <mass value="${box_m}" />
-            <origin rpy="0 0 0" xyz="0 0 0.1" />
-            <inertia ixx="1/12*${box_m}*(${box_h}**2 + ${box_l}**2)" ixy="0.0" ixz="0.0" iyy="1/12*${box_m}*(${box_w}**2 + ${box_l}**2)" iyz="0.0" izz="1/12*${box_m}*(${box_w}**2 + ${box_h}**2)"/>
-        </inertial>
     </visual>
+
     <collision>
+        <origin rpy="0 0 0" xyz="0 0 0" />
         <geometry>
             <box size="${box_l} ${box_w} ${box_h}"/>
         </geometry>
     </collision>
+
+    <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <mass value="${box_m}" />
+        <inertia ixx="${1/12*box_m*(box_h**2 + box_l**2)}" ixy="0.0" ixz="0.0"
+                 iyy="${1/12*box_m*(box_h**2 + box_l**2)}" iyz="0.0"
+                 izz="${1/12*box_m*(box_w**2 + box_h**2)}"/>
+    </inertial>
+
 </link>
 
 <joint name="wheel_right" type="continuous">
@@ -68,13 +74,15 @@
         <material name="gray"/>
         <inertial>
            <mass value="${wheel_m}"/>
+           <origin rpy="0 0 0" xyz="0 0 0" />
            <inertia ixx="1/12*${wheel_m}*(3*${wheel_r}**2 + ${wheel_h}**2)" ixy="0.0" ixz="0.0" iyy="1/12*${wheel_m}*(3*${wheel_r}**2 + ${wheel_h}**2)" iyz="0.0" izz="1/2*${wheel_m}*${wheel_r}**2"/>
          </inertial>
     </visual>
     <collision>
-           <geometry>
-             <cylinder length="${wheel_h}" radius="${wheel_r}"/>
-           </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <geometry>
+            <cylinder length="${wheel_h}" radius="${wheel_r}"/>
+        </geometry>
     </collision>
 </link>
 
@@ -94,13 +102,15 @@
         <material name="gray"/>
         <inertial>
            <mass value="0.2"/>
+           <origin rpy="0 0 0" xyz="0 0 0" />
            <inertia ixx="1/12*${wheel_m}*(3*${wheel_r}**2 + ${wheel_h}**2)" ixy="0.0" ixz="0.0" iyy="1/12*${wheel_m}*(3*${wheel_r}**2 + ${wheel_h}**2)" iyz="0.0" izz="1/2*${wheel_m}*${wheel_r}**2"/>
          </inertial>
     </visual>
     <collision>
-           <geometry>
-             <cylinder length="${wheel_h}" radius="${wheel_r}"/>
-           </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <geometry>
+            <cylinder length="${wheel_h}" radius="${wheel_r}"/>
+        </geometry>
     </collision>
 </link>
 
@@ -119,13 +129,15 @@
         <material name="gray"/>
         <inertial>
            <mass value="${caster_m}"/>
+           <origin xyz="0 0 0" />
            <inertia ixx="2/5*${caster_m}*(${caster_r}**2)" ixy="0.0" ixz="0.0" iyy="2/5*${caster_m}*(${caster_r}**2)" iyz="0.0" izz="2/5*${caster_m}*${caster_r}**2"/>
          </inertial>
     </visual>
     <collision>
-           <geometry>
-             <sphere radius="${caster_r}"/>
-           </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0" />
+        <geometry>
+            <sphere radius="${caster_r}"/>
+        </geometry>
     </collision>
 </link>
 
@@ -144,13 +156,15 @@
         <material name="gray"/>
         <inertial>
            <mass value="0.05"/>
+           <origin xyz="0 0 0" />
            <inertia ixx="2/5*${caster_m}*(${caster_r}**2)" ixy="0.0" ixz="0.0" iyy="2/5*${caster_m}*(${caster_r}**2)" iyz="0.0" izz="2/5*${caster_m}*${caster_r}**2"/>
          </inertial>
     </visual>
     <collision>
-           <geometry>
-             <sphere radius="${caster_r}"/>
-           </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0" />
+        <geometry>
+            <sphere radius="${caster_r}"/>
+        </geometry>
     </collision>
 </link>
 
