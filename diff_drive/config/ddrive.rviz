@@ -67,13 +67,27 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        bottom_caster:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
           Value: true
         chassis:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
+        left_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         right_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        top_caster:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -84,6 +98,42 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        base_link:
+          Value: true
+        bottom_caster:
+          Value: true
+        chassis:
+          Value: true
+        left_wheel:
+          Value: true
+        right_wheel:
+          Value: true
+        top_caster:
+          Value: true
+      Marker Alpha: 1
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        base_link:
+          chassis:
+            bottom_caster:
+              {}
+            left_wheel:
+              {}
+            right_wheel:
+              {}
+            top_caster:
+              {}
+      Update Interval: 0
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -149,4 +199,4 @@ Window Geometry:
     collapsed: false
   Width: 1200
   X: 479
-  Y: 104
+  Y: 67
