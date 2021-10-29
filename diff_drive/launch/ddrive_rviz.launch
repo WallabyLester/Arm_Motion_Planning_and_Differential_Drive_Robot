@@ -2,7 +2,8 @@
     <!-- <rosparam command="load" file="$(find diff_drive)/config/arm.yaml"/> -->
     <param name="robot_description" command="xacro $(find diff_drive)/urdf/ddrive.urdf.xacro" />
 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find diff_drive)/config/ddrive.rviz" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find diff_drive)/rviz/ddrive.rviz" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find diff_drive)/rviz/ddrive_odom.rviz" /> -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     
     <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />

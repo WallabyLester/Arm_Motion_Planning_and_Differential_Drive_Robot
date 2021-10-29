@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/wiki/xacro" name="ddrive">
 
+<xacro:property name="ddrive" value="$(find diff_drive)/config/ddrive.yaml" />
+<xacro:property name="config" value="${load_yaml(ddrive)}" />
+
+<xacro:property name="box_l" value="${config['box_l']}" />
+<xacro:property name="box_w" value="${config['box_w']}" />
+<xacro:property name="box_h" value="${config['box_h']}" />
+<xacro:property name="box_m" value="${config['box_m']}" />
+<xacro:property name="wheel_h" value="${config['wheel_h']}" />
+<xacro:property name="wheel_r" value="${config['wheel_r']}" />
+<xacro:property name="wheel_m" value="${config['wheel_m']}" />
+
 <gazebo reference="chassis">
     <material>Gazebo/FlatBlack</material>
 </gazebo>
@@ -49,6 +60,27 @@
     <fdir1>1 0 0</fdir1>
 </gazebo>
 
-
+<gazebo>
+<plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+<rosDebugLevel>na</rosDebugLevel>
+<alwaysOn>true</alwaysOn>
+<updateRate>100</updateRate>
+<leftJoint>wheel_left</leftJoint>
+<rightJoint>wheel_right</rightJoint>
+<wheelSeparation>${box_w+wheel_h}</wheelSeparation>
+<wheelDiameter>${wheel_r}</wheelDiameter>
+<wheelTorque>20</wheelTorque>
+<commandTopic>diff/cmd_vel</commandTopic>
+<odometryTopic>diff/odom</odometryTopic>
+<odometryFrame>odom</odometryFrame>
+<robotBaseFrame>base_link</robotBaseFrame>
+<publishWheelTF>false</publishWheelTF>
+<publishOdomTF>true</publishOdomTF>
+<publishWheelJointState>true</publishWheelJointState>
+<wheelAcceleration>false</wheelAcceleration>
+<odometrySource>world</odometrySource>
+<publishTf>1</publishTf>
+</plugin>
+</gazebo>
 
 </robot>
