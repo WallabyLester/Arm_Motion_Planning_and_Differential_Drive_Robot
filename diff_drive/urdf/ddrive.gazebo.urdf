@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/wiki/xacro">
+
+<gazebo reference="chassis">
+    <material>Gazebo/FlatBlack</material>
+</gazebo>
+
+<gazebo reference="wheel_right">
+    <material>Gazebo/DarkGrey</material>
+    <mu1>999</mu1>
+    <mu2>999</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+</gazebo>
+
+<gazebo reference="wheel_left">
+    <material>Gazebo/DarkGrey</material>
+    <mu1>999</mu1>
+    <mu2>999</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+</gazebo>
+
+<gazebo reference="caster_top">
+    <material>Gazebo/Grey</material>
+    <mu1>1</mu1>
+    <mu2>1</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+</gazebo>
+
+<gazebo reference="caster_bottom">
+    <material>Gazebo/Grey</material>
+    <mu1>1</mu1>
+    <mu2>1</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+</gazebo>
+
+
+
+</robot>

@@ -15,6 +15,13 @@
 <xacro:property name="caster_m" value="${config['caster_m']}" />
 
 
+<material name="black">
+    <color rgba="0 0 0 1"/>
+</material>
+<material name="gray">
+    <color rgba="0.3 0.3 0.3 1" />
+</material>
+
 <link name="base_link" />
 
 <joint name ="base" type="fixed">
@@ -29,9 +36,7 @@
         <geometry>
             <box size="${box_l} ${box_w} ${box_h}" />
         </geometry>
-        <material name="black">
-            <color rgba="0 0 0 1"/>
-        </material>
+        <material name="black"/>
         <inertial>
             <mass value="${box_m}" />
             <origin rpy="0 0 0" xyz="0 0 0.1" />
@@ -58,9 +63,7 @@
         <geometry>
             <cylinder length="${wheel_h}" radius="${wheel_r}"/>
         </geometry>
-        <material name="gray">
-            <color rgba="0.3 0.3 0.3 1.0" />
-        </material>
+        <material name="gray"/>
         <inertial>
            <mass value="${wheel_m}"/>
            <inertia ixx="1/12*${wheel_m}*(3*${wheel_r}**2 + ${wheel_h}**2)" ixy="0.0" ixz="0.0" iyy="1/12*${wheel_m}*(3*${wheel_r}**2 + ${wheel_h}**2)" iyz="0.0" izz="1/2*${wheel_m}*${wheel_r}**2"/>
@@ -86,9 +89,7 @@
         <geometry>
             <cylinder length="${wheel_h}" radius="${wheel_r}"/>
         </geometry>
-        <material name="gray">
-            <color rgba="0.3 0.3 0.3 1.0" />
-        </material>
+        <material name="gray"/>
         <inertial>
            <mass value="0.2"/>
            <inertia ixx="1/12*${wheel_m}*(3*${wheel_r}**2 + ${wheel_h}**2)" ixy="0.0" ixz="0.0" iyy="1/12*${wheel_m}*(3*${wheel_r}**2 + ${wheel_h}**2)" iyz="0.0" izz="1/2*${wheel_m}*${wheel_r}**2"/>
@@ -113,9 +114,7 @@
         <geometry>
             <sphere radius="${caster_r}"/>
         </geometry>
-        <material name="gray">
-            <color rgba="0.3 0.3 0.3 1" />
-        </material>
+        <material name="gray"/>
         <inertial>
            <mass value="${caster_m}"/>
            <inertia ixx="2/5*${caster_m}*(${caster_r}**2)" ixy="0.0" ixz="0.0" iyy="2/5*${caster_m}*(${caster_r}**2)" iyz="0.0" izz="2/5*${caster_m}*${caster_r}**2"/>
@@ -140,9 +139,7 @@
         <geometry>
             <sphere radius="${caster_r}"/>
         </geometry>
-        <material name="gray">
-            <color rgba="0.3 0.3 0.3 1" />
-        </material>
+        <material name="gray"/>
         <inertial>
            <mass value="0.05"/>
            <inertia ixx="2/5*${caster_m}*(${caster_r}**2)" ixy="0.0" ixz="0.0" iyy="2/5*${caster_m}*(${caster_r}**2)" iyz="0.0" izz="2/5*${caster_m}*${caster_r}**2"/>
