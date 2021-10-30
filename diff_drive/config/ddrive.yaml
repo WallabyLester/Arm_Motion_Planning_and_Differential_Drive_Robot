@@ -9,3 +9,6 @@ wheel_m: 12.0
 
 caster_r: 0.05
 caster_m: 0.005
+
+pub_freq: 100
+vel: 2

@@ -6,6 +6,8 @@ PUBLISHERS:
     
 
 SUBSCRIBERS:
+
+PARAMETERS:
     
 
 """
@@ -24,8 +26,9 @@ class Flip():
     def __init__(self):
         self.odom = rospy.Subscriber('/diff/odom', Odometry, self.callback)
         self.pub = rospy.Publisher("diff/cmd_vel", Twist, queue_size=10)
-
-        self.rate = rospy.Rate(100)
+        self.pub_freq = rospy.get_param("pub_freq")
+        self.rate = rospy.Rate(self.pub_freq)
+        self.vel = rospy.get_param("vel")
         self.x = 0
         self.y = 0
         self.z = 0
@@ -64,13 +67,13 @@ class Flip():
     def move(self):
         while not rospy.is_shutdown() and self.x < 10.5:
             rospy.logdebug(f"pose x: {self.x}, pose y: {self.y}, pose z: {self.z}, orientation x: {self.orient_x}, orientation y: {self.orient_y}, orientation z: {self.orient_z}, orientation w: {self.orient_w}")
-            self.movement(2)
+            self.movement(self.vel)
         self.stop()
         rospy.sleep(1)
 
         while not rospy.is_shutdown() and self.x > 4.0:
             rospy.logdebug(f"pose x: {self.x}, pose y: {self.y}, pose z: {self.z}, orientation x: {self.orient_x}, orientation y: {self.orient_y}, orientation z: {self.orient_z}, orientation w: {self.orient_w}")
-            self.movement(-2)
+            self.movement(-self.vel)
         self.stop()
         rospy.sleep(1)
         self.move()
