@@ -26,12 +26,16 @@ class Flip():
     """
     def __init__(self):
         self.odom = rospy.Subscriber('/diff/odom', Odometry, self.callback)
-        self.pub = rospy.Publisher("/diff/cmd_vel", Twist, queue_size=10)
+        self.pub = rospy.Publisher("diff/cmd_vel", Twist, queue_size=10)
 
         self.rate = rospy.Rate(100)
         self.x = 0
         self.y = 0
-        self.orient = 0
+        self.z = 0
+        self.orient_x = 0
+        self.orient_y = 0
+        self.orient_z = 0
+        self.orient_w = 0
         
     def callback(self, data):
         """ Callback function for diff/odom topic
@@ -44,15 +48,35 @@ class Flip():
         """
         self.x = data.pose.pose.position.x
         self.y = data.pose.pose.position.y
-        self.orient = data.pose.pose.orientation.y
+        self.z = data.pose.pose.position.z
+        self.orient_x = data.pose.pose.orientation.x
+        self.orient_y = data.pose.pose.orientation.y
+        self.orient_z = data.pose.pose.orientation.z
+        self.orient_w = data.pose.pose.orientation.w
 
     def velocity(self):
-        movement = Twist(linear = Vector3(x = 1, y = 0, z = 0), angular = Vector3(x = 0, y = 0, z = 0))
-        self.pub.publish(movement)
+        while not rospy.is_shutdown() and self.x < 10.5:
+            movement = Twist(linear = Vector3(x = 1, y=0, z=0), angular = Vector3(x=0,y=0,z=0))
+            self.pub.publish(movement)
+            rospy.logdebug(f"pose x: {self.x}, pose y: {self.y}, pose z: {self.z}, orientation x: {self.orient_x}, orientation y: {self.orient_y}, orientation z: {self.orient_z}, orientation w: {self.orient_w}")
+            self.rate.sleep()
+        stop = Twist(linear = Vector3(x = 0, y=0, z=0), angular = Vector3(x=0,y=0,z=0))
+        self.pub.publish(stop)
+        self.rate.sleep()
+        rospy.sleep(1)
 
+        while not rospy.is_shutdown() and self.x > 5.5:
+            movement = Twist(linear = Vector3(x = -1, y=0, z=0), angular = Vector3(x=0,y=0,z=0))
+            self.pub.publish(movement)
+            rospy.logdebug(f"pose x: {self.x}, pose y: {self.y}, pose z: {self.z}, orientation x: {self.orient_x}, orientation y: {self.orient_y}, orientation z: {self.orient_z}, orientation w: {self.orient_w}")
+            self.rate.sleep()
+        stop = Twist(linear = Vector3(x = 0, y=0, z=0), angular = Vector3(x=0,y=0,z=0))
+        self.pub.publish(stop)
+        self.rate.sleep()
+        rospy.sleep(1)
 
 if __name__ == '__main__':
     rospy.init_node("flip", log_level=rospy.DEBUG)
     flip = Flip()
     flip.velocity()
-    rospy.spin()
+    
