@@ -37,6 +37,15 @@ class Mover():
         group_name = "interbotix_arm"
         self.move_group = moveit_commander.MoveGroupCommander(group_name)
         self.planning_frame = self.move_group.get_planning_frame()
+        
+
+
+
+
+
+
+
+
         self.add_table()
 
 
@@ -86,12 +95,14 @@ class Mover():
 
     def add_table(self):
         table_pose = PoseStamped()
-        table_pose.header.frame_id = ""
+        table_pose.header.frame_id = "world"
         table_pose.pose.orientation.w = 1.0
         table_pose.pose.position.z = 0.0
         box_name = "table"
-        while not self.wait_for_state_update(box_name, item_known=True):
+        while not self.wait_for_state_update(box_name, box_is_known=True):
             self.scene.add_box(box_name, table_pose, size=(1.0, 0.62, .05))
+
+    
 
 def main():
     moveit_commander.roscpp_initialize(sys.argv)
