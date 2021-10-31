@@ -23,9 +23,9 @@ from geometry_msgs.msg import TransformStamped, Twist, Vector3, PoseStamped, Qua
 from tf_conversions import transformations
 from math import pi, fabs, cos, sqrt
 from std_msgs.msg import String
-from moveit_commander.conversions import pose_to_list
+from moveit_commander.conversions import pose_to_list, list_to_pose
 from std_srvs.srv import Empty, EmptyResponse
-from arm_move.srv import Step, Follow
+from arm_move.srv import Step, Follow, FollowResponse
 
 
 class Mover():
@@ -47,16 +47,6 @@ class Mover():
         self.follow = rospy.Service("follow", Follow, self.follow_callback)
 
         self.add_table()
-
-        # display_trajectory_publisher = rospy.Publisher(
-        #     "/move_group/display_planned_path",
-        #     moveit_msgs.msg.DisplayTrajectory,
-        #     queue_size=20,)
-        
-        # self.display_trajectory_publisher = display_trajectory_publisher
-        
-        # self.eef_link = eef_link
-        # self.group_names = group_names
     
     def wait_for_state_update(self, box_name, box_is_known=False, box_is_attached=False, timeout=4):
         """ Description
@@ -153,9 +143,34 @@ class Mover():
         return error_code
 
     def follow_callback(self, data):
-        pass
+        waypoint = self.waypoints[0][0]
+        # waypoint = waypoint[0]
+        pose_list = list_to_pose(waypoint[0:6])
+        gripper = waypoint[7]
+        print(pose_list)
+        print(gripper)
+        # for waypoint in self.waypoints:
+        #     pose = waypoint[0:6]
+        #     gripper = waypoint[7]
+        #     pose_list = list_to_pose(pose)
+        #     self.move_group.set_pose_target(pose_list)
+        #     success_flag, trajectory_message, planning_time, error_code = self.move_group.plan()
+        #     self.move_group.execute(trajectory_message, wait=True)
+        #     self.move_group.stop()
+        #     self.move_group.clear_pose_targets()
 
-        # if data.repeat
+        #     if gripper:
+        #         self.gripper_group.set_named_target("Closed")
+        #     else:
+        #         self.gripper_group.set_named_target("Open")
+        #     self.gripper_group.go()
+        #     self.gripper_group.stop()
+        #     self.gripper_group.clear_pose_targets()
+
+        # if data.repeat:
+        #     self.follow_callback()
+        
+        # return error_code
         
 
 def main():
