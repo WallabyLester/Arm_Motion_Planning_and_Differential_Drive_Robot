@@ -25,6 +25,7 @@ from math import pi, fabs, cos, sqrt
 from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
 from std_srvs.srv import Empty, EmptyResponse
+from arm_move.srv import Step
 
 
 class Mover():
@@ -37,10 +38,13 @@ class Mover():
         self.scene = moveit_commander.PlanningSceneInterface()
         group_name = "interbotix_arm"
         self.move_group = moveit_commander.MoveGroupCommander(group_name)
+        self.gripper_group = moveit_commander.MoveGroupCommander("interbotix_gripper")
         self.planning_frame = self.move_group.get_planning_frame()
-        # self.waypoints = rospy.get_param("/waypoints")
+        self.waypoints = rospy.get_param("/waypoints")
+        self.clear_waypoints = rospy.get_param("~clear_waypoints")
         self.reset = rospy.Service("reset", Empty, self.reset_callback)
-
+        self.step = rospy.Service("step", Step, self.step_callback)
+        self.follow = rospy.Service("follow", Empty, self.follow_callback)
 
         self.add_table()
 
@@ -102,13 +106,13 @@ class Mover():
     def add_realsense(self):
         box_pose = PoseStamped()
         box_pose.header.frame_id = "world"
-        box_pose.pose.position.x = 0.20
+        box_pose.pose.position.x = 0.12
         box_pose.pose.position.y = 0.0
         box_pose.pose.position.z = 0.025
         box_pose.pose.orientation.w = 1.0
         box_name = "realsense_box"
         while not self.wait_for_state_update(box_name, box_is_known=True):
-            self.scene.add_box(box_name, box_pose, size=(0.14, 0.09, 0.05))
+            self.scene.add_box(box_name, box_pose, size=(0.09, 0.14, 0.05))
 
     def reset_callback(self, empty):
         self.add_realsense()
@@ -116,8 +120,41 @@ class Mover():
         self.move_group.go()
         self.move_group.stop()
         self.move_group.clear_pose_targets()
+
+        if self.clear_waypoints:
+            self.waypoints = []
         
         return EmptyResponse()
+
+    def step_callback(self, data):
+        pose = data.pose
+        gripper = data.gripper
+
+        self.move_group.set_pose_target(pose)
+        success_flag, trajectory_message, planning_time, error_code = self.move_group.plan()
+        if not success_flag:
+            return error_code
+
+        self.move_group.execute(trajectory_message, wait=True)
+        self.move_group.stop()
+        self.move_group.clear_pose_targets()
+
+        if gripper:
+            self.gripper_group.set_named_target("Closed")
+        else:
+            self.gripper_group.set_named_target("Open")
+        self.gripper_group.go()
+        self.gripper_group.stop()
+        self.gripper_group.clear_pose_targets()
+
+        self.waypoints.append([pose_to_list(pose), gripper])
+        rospy.set_param("/waypoints", self.waypoints)
+
+        return error_code
+
+    def follow_callback(self, data):
+        pass
+        
 
 def main():
     moveit_commander.roscpp_initialize(sys.argv)

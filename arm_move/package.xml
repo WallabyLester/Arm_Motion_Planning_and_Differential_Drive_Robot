@@ -2,7 +2,7 @@
 <package format="2">
   <name>arm_move</name>
   <version>0.0.1</version>
-  <description>Create a planning scene to have a robot follow waypoins</description>
+  <description>Makes an Interbotix px100 arm follow waypoins</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -50,8 +50,14 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <depend>moveit_msgs</depend>
-  <exec_depend>interbotix_moveit</exec_depend>
-  <exec_depend>interbotix_moveit_interface</exec_depend>
+  <depend>message_generation</depend>
+  <depend>message_runtime</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <exec_depend>interbotix_xsarm_moveit</exec_depend>
+  <exec_depend>interbotix_xsarm_moveit_interface</exec_depend>
+  <depend>moveit_commander</depend>
+
 
 
   <!-- The export tag contains other, unspecified, tags -->

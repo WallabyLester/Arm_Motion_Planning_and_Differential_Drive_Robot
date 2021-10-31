@@ -8,7 +8,10 @@ project(arm_move)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-moveit_msgs
+    geometry_msgs
+    moveit_msgs
+    moveit_commander
+    message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -52,11 +55,11 @@ moveit_msgs
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+   FILES
+   Step.srv
+
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -69,6 +72,7 @@ moveit_msgs
 generate_messages(
   DEPENDENCIES
   moveit_msgs
+  geometry_msgs
 )
 
 ################################################
@@ -103,6 +107,9 @@ generate_messages(
 catkin_package(
     CATKIN_DEPENDS
     moveit_msgs
+    moveit_commander
+    geometry_msgs
+    message_runtime
 )
 
 ###########
@@ -155,7 +162,7 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
- catkin_install_python(PROGRAMS
+catkin_install_python(PROGRAMS
    nodes/mover
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
