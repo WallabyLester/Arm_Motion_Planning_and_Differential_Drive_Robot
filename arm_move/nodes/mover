@@ -24,6 +24,7 @@ from tf_conversions import transformations
 from math import pi, fabs, cos, sqrt
 from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
+from std_srvs.srv import Empty, EmptyResponse
 
 
 class Mover():
@@ -37,17 +38,11 @@ class Mover():
         group_name = "interbotix_arm"
         self.move_group = moveit_commander.MoveGroupCommander(group_name)
         self.planning_frame = self.move_group.get_planning_frame()
-        
-
-
-
-
-
-
+        # self.waypoints = rospy.get_param("/waypoints")
+        self.reset = rospy.Service("reset", Empty, self.reset_callback)
 
 
         self.add_table()
-
 
         # display_trajectory_publisher = rospy.Publisher(
         #     "/move_group/display_planned_path",
@@ -96,13 +91,33 @@ class Mover():
     def add_table(self):
         table_pose = PoseStamped()
         table_pose.header.frame_id = "world"
+        table_pose.pose.position.x = 0.25
+        table_pose.pose.position.y = 0.0
+        table_pose.pose.position.z = -0.025
         table_pose.pose.orientation.w = 1.0
-        table_pose.pose.position.z = 0.0
-        box_name = "table"
-        while not self.wait_for_state_update(box_name, box_is_known=True):
-            self.scene.add_box(box_name, table_pose, size=(1.0, 0.62, .05))
+        table_name = "table"
+        while not self.wait_for_state_update(table_name, box_is_known=True):
+            self.scene.add_box(table_name, table_pose, size=(1.0, 0.62, 0.05))
 
-    
+    def add_realsense(self):
+        box_pose = PoseStamped()
+        box_pose.header.frame_id = "world"
+        box_pose.pose.position.x = 0.20
+        box_pose.pose.position.y = 0.0
+        box_pose.pose.position.z = 0.025
+        box_pose.pose.orientation.w = 1.0
+        box_name = "realsense_box"
+        while not self.wait_for_state_update(box_name, box_is_known=True):
+            self.scene.add_box(box_name, box_pose, size=(0.14, 0.09, 0.05))
+
+    def reset_callback(self, empty):
+        self.add_realsense()
+        self.move_group.set_named_target("Home")
+        self.move_group.go()
+        self.move_group.stop()
+        self.move_group.clear_pose_targets()
+        
+        return EmptyResponse()
 
 def main():
     moveit_commander.roscpp_initialize(sys.argv)
