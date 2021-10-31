@@ -143,34 +143,29 @@ class Mover():
         return error_code
 
     def follow_callback(self, data):
-        waypoint = self.waypoints[0][0]
-        # waypoint = waypoint[0]
-        pose_list = list_to_pose(waypoint[0:6])
-        gripper = waypoint[7]
-        print(pose_list)
-        print(gripper)
-        # for waypoint in self.waypoints:
-        #     pose = waypoint[0:6]
-        #     gripper = waypoint[7]
-        #     pose_list = list_to_pose(pose)
-        #     self.move_group.set_pose_target(pose_list)
-        #     success_flag, trajectory_message, planning_time, error_code = self.move_group.plan()
-        #     self.move_group.execute(trajectory_message, wait=True)
-        #     self.move_group.stop()
-        #     self.move_group.clear_pose_targets()
-
-        #     if gripper:
-        #         self.gripper_group.set_named_target("Closed")
-        #     else:
-        #         self.gripper_group.set_named_target("Open")
-        #     self.gripper_group.go()
-        #     self.gripper_group.stop()
-        #     self.gripper_group.clear_pose_targets()
-
-        # if data.repeat:
-        #     self.follow_callback()
         
-        # return error_code
+        for waypoint in self.waypoints:
+            # print(f"waypoint = {waypoint}")
+            pose = list_to_pose(waypoint[0])
+            gripper = waypoint[1]
+            self.move_group.set_pose_target(pose)
+            success_flag, trajectory_message, planning_time, error_code = self.move_group.plan()
+            self.move_group.execute(trajectory_message, wait=True)
+            self.move_group.stop()
+            self.move_group.clear_pose_targets()
+
+            if gripper:
+                self.gripper_group.set_named_target("Closed")
+            else:
+                self.gripper_group.set_named_target("Open")
+            self.gripper_group.go()
+            self.gripper_group.stop()
+            self.gripper_group.clear_pose_targets()
+            
+        if data.repeat:
+            self.follow_callback()
+        
+        return FollowResponse
         
 
 def main():
