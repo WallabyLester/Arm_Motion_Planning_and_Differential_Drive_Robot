@@ -25,7 +25,7 @@ from math import pi, fabs, cos, sqrt
 from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
 from std_srvs.srv import Empty, EmptyResponse
-from arm_move.srv import Step
+from arm_move.srv import Step, Follow
 
 
 class Mover():
@@ -44,7 +44,7 @@ class Mover():
         self.clear_waypoints = rospy.get_param("~clear_waypoints")
         self.reset = rospy.Service("reset", Empty, self.reset_callback)
         self.step = rospy.Service("step", Step, self.step_callback)
-        self.follow = rospy.Service("follow", Empty, self.follow_callback)
+        self.follow = rospy.Service("follow", Follow, self.follow_callback)
 
         self.add_table()
 
@@ -154,11 +154,13 @@ class Mover():
 
     def follow_callback(self, data):
         pass
+
+        # if data.repeat
         
 
 def main():
     moveit_commander.roscpp_initialize(sys.argv)
-    rospy.init_node("mover", anonymous=True)
+    rospy.init_node("mover", anonymous=True, log_level=rospy.DEBUG)
     Mover()
     rospy.spin()
 
