@@ -1,0 +1,1118 @@
+<sdf version='1.7'>
+  <world name='default'>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name='px100'>
+      <joint name='fixed' type='fixed'>
+        <pose relative_to='__model__'>0 0 0 0 -0 0</pose>
+        <parent>world</parent>
+        <child>px100/base_link</child>
+      </joint>
+      <link name='px100/base_link'>
+        <pose relative_to='fixed'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.033205 0.000892 0.021191 0 -0 1.5708</pose>
+          <mass>0.395887</mass>
+          <inertia>
+            <ixx>0.001065</ixx>
+            <ixy>-1.303e-05</ixy>
+            <ixz>1.8614e-06</ixz>
+            <iyy>0.0003332</iyy>
+            <iyz>4.092e-05</iyz>
+            <izz>0.001208</izz>
+          </inertia>
+        </inertial>
+        <collision name='px100/base_link_collision'>
+          <pose>0 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-1-Base.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='px100/base_link_visual'>
+          <pose>0 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-1-Base.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Custom/Interbotix</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='waist' type='revolute'>
+        <pose relative_to='px100/base_link'>0 0 0.0508 0 -0 0</pose>
+        <parent>px100/base_link</parent>
+        <child>px100/shoulder_link</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-3.14159</lower>
+            <upper>3.14159</upper>
+            <effort>100</effort>
+            <velocity>3.14159</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='px100/shoulder_link'>
+        <pose relative_to='waist'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>1.1e-05 -0.000361 0.02846 0 -0 1.5708</pose>
+          <mass>0.072587</mass>
+          <inertia>
+            <ixx>2.31e-05</ixx>
+            <ixy>3e-10</ixy>
+            <ixz>1.606e-07</ixz>
+            <iyy>2.535e-05</iyy>
+            <iyz>-2.06e-08</iyz>
+            <izz>1.442e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='px100/shoulder_link_collision'>
+          <pose>0 0 -0.0022 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-2-Shoulder.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='px100/shoulder_link_visual'>
+          <pose>0 0 -0.0022 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-2-Shoulder.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Custom/Interbotix</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='shoulder' type='revolute'>
+        <pose relative_to='px100/shoulder_link'>0 0 0.04225 0 -0 0</pose>
+        <parent>px100/shoulder_link</parent>
+        <child>px100/upper_arm_link</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1.93732</lower>
+            <upper>1.8675</upper>
+            <effort>100</effort>
+            <velocity>3.14159</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='px100/upper_arm_link'>
+        <pose relative_to='shoulder'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.016198 -0.000293 0.087723 0 -0 1.5708</pose>
+          <mass>0.082923</mass>
+          <inertia>
+            <ixx>8.006e-05</ixx>
+            <ixy>-2.144e-07</ixy>
+            <ixz>2.982e-07</ixz>
+            <iyy>7.459e-05</iyy>
+            <iyz>1.657e-05</iyz>
+            <izz>3.685e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='px100/upper_arm_link_collision'>
+          <pose>0 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-3-UA.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='px100/upper_arm_link_visual'>
+          <pose>0 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-3-UA.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Custom/Interbotix</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='elbow' type='revolute'>
+        <pose relative_to='px100/upper_arm_link'>0.035 0 0.1 3.14159 -0 0</pose>
+        <parent>px100/upper_arm_link</parent>
+        <child>px100/forearm_link</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1.6057</lower>
+            <upper>2.11185</upper>
+            <effort>100</effort>
+            <velocity>3.14159</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='px100/forearm_link'>
+        <pose relative_to='elbow'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.077372 -0.000332 0 0 -0 1.5708</pose>
+          <mass>0.073058</mass>
+          <inertia>
+            <ixx>5.338e-05</ixx>
+            <ixy>-3.073e-07</ixy>
+            <ixz>0</ixz>
+            <iyy>1.653e-05</iyy>
+            <iyz>0</iyz>
+            <izz>6.035e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='px100/forearm_link_collision'>
+          <pose>0 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-4-Forearm.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='px100/forearm_link_visual'>
+          <pose>0 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-4-Forearm.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Custom/Interbotix</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='wrist_angle' type='revolute'>
+        <pose relative_to='px100/forearm_link'>0.1 0 0 0 -0 0</pose>
+        <parent>px100/forearm_link</parent>
+        <child>px100/gripper_link</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-2.14675</lower>
+            <upper>1.74533</upper>
+            <effort>100</effort>
+            <velocity>3.14159</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='px100/gripper_link'>
+        <pose relative_to='wrist_angle'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.044691 0 -0.011354 3.14159 -0 -1.5708</pose>
+          <mass>0.069929</mass>
+          <inertia>
+            <ixx>2.268e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>2.044e-05</iyy>
+            <iyz>8.485e-07</iyz>
+            <izz>1.974e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='px100/gripper_link_collision'>
+          <pose>0 0 0 3.14159 -0 -1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-5-Wrist-Gripper.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='px100/gripper_link_visual'>
+          <pose>0 0 0 3.14159 -0 -1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-5-Wrist-Gripper.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Custom/Interbotix</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='ee_arm' type='revolute'>
+        <pose relative_to='px100/gripper_link'>0.063 0 0 -3.14159 0 0</pose>
+        <parent>px100/gripper_link</parent>
+        <child>px100/ee_arm_link</child>
+        <axis>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <xyz>0 0 1</xyz>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+      </joint>
+      <link name='px100/ee_arm_link'>
+        <pose relative_to='ee_arm'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0.001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.001</iyy>
+            <iyz>0</iyz>
+            <izz>0.001</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='gripper' type='revolute'>
+        <pose relative_to='px100/ee_arm_link'>0.0055 0 0 0 -0 0</pose>
+        <parent>px100/ee_arm_link</parent>
+        <child>px100/gripper_prop_link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='px100/gripper_prop_link'>
+        <pose relative_to='gripper'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.000846 -2e-06 4.2e-05 0 -0 1.5708</pose>
+          <mass>0.00434</mass>
+          <inertia>
+            <ixx>5.923e-07</ixx>
+            <ixy>0</ixy>
+            <ixz>3.195e-07</ixz>
+            <iyy>1.1156e-06</iyy>
+            <iyz>-4e-10</iyz>
+            <izz>5.743e-07</izz>
+          </inertia>
+        </inertial>
+        <collision name='px100/gripper_prop_link_collision'>
+          <pose>-0.0685 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-6-Gripper-Prop.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='px100/gripper_prop_link_visual'>
+          <pose>-0.0685 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-6-Gripper-Prop.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Custom/Interbotix</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay>
+          <linear>1</linear>
+          <angular>1</angular>
+        </velocity_decay>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='gripper_bar' type='revolute'>
+        <pose relative_to='px100/ee_arm_link'>0 0 0 0 -0 0</pose>
+        <parent>px100/ee_arm_link</parent>
+        <child>px100/gripper_bar_link</child>
+        <axis>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <xyz>0 0 1</xyz>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+      </joint>
+      <link name='px100/gripper_bar_link'>
+        <pose relative_to='gripper_bar'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.009687 1e-06 0.004962 0 -0 1.5708</pose>
+          <mass>0.034199</mass>
+          <inertia>
+            <ixx>7.4125e-06</ixx>
+            <ixy>-8e-10</ixy>
+            <ixz>-6e-10</ixz>
+            <iyy>2.843e-05</iyy>
+            <iyz>-1.3889e-06</iyz>
+            <izz>2.86e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='px100/gripper_bar_link_collision'>
+          <pose>-0.063 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-7-Gripper-Bar.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='px100/gripper_bar_link_visual'>
+          <pose>-0.063 0 0 0 -0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-7-Gripper-Bar.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Custom/Interbotix</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='ee_bar' type='revolute'>
+        <pose relative_to='px100/gripper_bar_link'>0.023 0 0 0 -0 0</pose>
+        <parent>px100/gripper_bar_link</parent>
+        <child>px100/fingers_link</child>
+        <axis>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <xyz>0 0 1</xyz>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+      </joint>
+      <link name='px100/fingers_link'>
+        <pose relative_to='ee_bar'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0.001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.001</iyy>
+            <iyz>0</iyz>
+            <izz>0.001</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='ee_gripper' type='revolute'>
+        <pose relative_to='px100/fingers_link'>0.027575 0 0 0 -0 0</pose>
+        <parent>px100/fingers_link</parent>
+        <child>px100/ee_gripper_link</child>
+        <axis>
+          <limit>
+            <lower>0</lower>
+            <upper>0</upper>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <xyz>0 0 1</xyz>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+      </joint>
+      <link name='px100/ee_gripper_link'>
+        <pose relative_to='ee_gripper'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0.001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.001</iyy>
+            <iyz>0</iyz>
+            <izz>0.001</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='left_finger' type='prismatic'>
+        <pose relative_to='px100/fingers_link'>0 0 0 0 -0 0</pose>
+        <parent>px100/fingers_link</parent>
+        <child>px100/left_finger_link</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>0.015</lower>
+            <upper>0.037</upper>
+            <effort>10</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='px100/left_finger_link'>
+        <pose relative_to='left_finger'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.013816 0 0 0 0 -1.5708</pose>
+          <mass>0.016246</mass>
+          <inertia>
+            <ixx>4.731e-06</ixx>
+            <ixy>-4.56e-07</ixy>
+            <ixz>0</ixz>
+            <iyy>1.5506e-06</iyy>
+            <iyz>0</iyz>
+            <izz>3.7467e-06</izz>
+          </inertia>
+        </inertial>
+        <collision name='px100/left_finger_link_collision'>
+          <pose>0 0.005 0 0 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-8-Finger.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='px100/left_finger_link_visual'>
+          <pose>0 0.005 0 0 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-8-Finger.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Custom/Interbotix</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='right_finger' type='prismatic'>
+        <pose relative_to='px100/fingers_link'>0 0 0 0 -0 0</pose>
+        <parent>px100/fingers_link</parent>
+        <child>px100/right_finger_link</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-0.037</lower>
+            <upper>-0.015</upper>
+            <effort>10</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='px100/right_finger_link'>
+        <pose relative_to='right_finger'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.013816 0 0 3.14159 -0 -1.5708</pose>
+          <mass>0.016246</mass>
+          <inertia>
+            <ixx>4.731e-06</ixx>
+            <ixy>4.56e-07</ixy>
+            <ixz>0</ixz>
+            <iyy>1.5506e-06</iyy>
+            <iyz>0</iyz>
+            <izz>3.7467e-06</izz>
+          </inertia>
+        </inertial>
+        <collision name='px100/right_finger_link_collision'>
+          <pose>0 -0.005 0 3.14159 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-8-Finger.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='px100/right_finger_link_visual'>
+          <pose>0 -0.005 0 3.14159 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/androo/custom_ws/src/interbotix_ros_arms/interbotix_descriptions/meshes/meshes_px100/PXA-100-M-8-Finger.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Custom/Interbotix</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>0</static>
+      <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
+        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        <legacyModeNS>1</legacyModeNS>
+        <robotNamespace>/px100/</robotNamespace>
+      </plugin>
+      <pose>0 0 0 0 -0 0</pose>
+    </model>
+    <state world_name='default'>
+      <sim_time>0 0</sim_time>
+      <real_time>0 0</real_time>
+      <wall_time>1635633580 191033859</wall_time>
+      <iterations>0</iterations>
+      <model name='RealSense_Box'>
+        <pose>0.242708 -0.000204 0.025 0 -0 3.14</pose>
+        <scale>1 1 1</scale>
+        <link name='link_1'>
+          <pose>0.242708 -0.000204 0.025 0 -0 3.14</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ground_plane'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='px100'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='px100/base_link'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/ee_arm_link'>
+          <pose>0.198 0 0.19305 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/ee_gripper_link'>
+          <pose>0.248575 0 0.19305 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/fingers_link'>
+          <pose>0.221 0 0.19305 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/forearm_link'>
+          <pose>0.035 0 0.19305 3.14159 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/gripper_bar_link'>
+          <pose>0.198 0 0.19305 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/gripper_link'>
+          <pose>0.135 0 0.19305 3.14159 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/gripper_prop_link'>
+          <pose>0.2035 0 0.19305 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/left_finger_link'>
+          <pose>0.221 0 0.19305 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/right_finger_link'>
+          <pose>0.221 0 0.19305 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/shoulder_link'>
+          <pose>0 0 0.0508 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='px100/upper_arm_link'>
+          <pose>0 0 0.09305 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <model name='RealSense_Box'>
+      <link name='link_1'>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.0166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.0166667</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <pose>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <enable_wind>0</enable_wind>
+        <visual name='visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.14 0.09 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <lighting>1</lighting>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <shader type='pixel'>
+              <normal_map>__default__</normal_map>
+            </shader>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>0.203663 0.002042 0 0 -0 0</pose>
+    </model>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>0.644896 -0.973125 0.412021 0 0.371643 1.8482</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>
