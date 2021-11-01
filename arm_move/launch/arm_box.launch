@@ -21,7 +21,6 @@
   <node name="mover" type="mover" pkg="arm_move" ns="$(arg robot_model)" output="screen">
     <remap from="/attached_collision_object" to="/px100/attached_collision_object"/>
     <remap from="/collision_object" to="/px100/collision_object"/>
-    <param name="clear_waypoints" value="$(arg clear_waypoints)"/>
   </node>
 
   <include if="$(arg use_gazebo)" file="$(find interbotix_xsarm_gazebo)/launch/xsarm_gazebo.launch">
@@ -32,7 +31,6 @@
     <arg name="use_world_frame"                   value="$(arg use_world_frame)"/>
     <arg name="external_urdf_loc"                 value="$(arg external_urdf_loc)"/>
     <arg name="world_name"                        value="$(find arm_move)/worlds/arm_box.world"/>
-    <!-- <arg name="world_name"                        value="$(find interbotix_xsarm_gazebo)/worlds/xsarm_gazebo.world"/> -->
     <arg name="use_trajectory_controllers"        value="true"/>
   </include>
 
@@ -51,8 +49,6 @@
   <include if="$(arg use_fake)" file="$(find interbotix_xsarm_moveit)/launch/xsarm_moveit.launch" pass_all_args="true">
     <arg name="robot_model"                       value="$(arg robot_model)"/>
     <arg name="dof"                               value="4"/>
-    <!-- <arg name="use_actual" value="$(arg use_actual)"/> -->
-    <!-- <arg name="use_fake" value="$(arg use_fake)"/> -->
   </include>
 
   <include if="$(arg use_gazebo)" file="$(find interbotix_xsarm_moveit)/launch/move_group.launch" ns="$(arg robot_name)">
@@ -66,10 +62,21 @@
     <arg name="publish_monitored_planning_scene"  value="true" />
   </include>
 
-  <!-- <include if="$(arg use_moveit_rviz)" file="$(find interbotix_xsarm_moveit)/launch/moveit_rviz.launch" ns="$(arg robot_name)">
+  <include if="$(arg use_actual)" file="$(find interbotix_xsarm_moveit)/launch/move_group.launch" ns="$(arg robot_name)">
+    <arg name="robot_model"                       value="$(arg robot_model)"/>
+    <arg name="robot_name"                        value="$(arg robot_name)"/>
+    <arg name="base_link_frame"                   value="$(arg base_link_frame)"/>
+    <arg name="show_ar_tag"                       value="$(arg show_ar_tag)"/>
+    <arg name="external_srdf_loc"                 value="$(arg external_srdf_loc)"/>
+    <arg name="dof"                               value="$(arg dof)"/>
+    <arg name="fake_execution"                    value="$(arg use_fake)"/>
+    <arg name="publish_monitored_planning_scene"  value="true" />
+  </include>
+
+  <include if="$(arg use_actual)" file="$(find interbotix_xsarm_moveit)/launch/moveit_rviz.launch" ns="$(arg robot_name)">
     <arg name="rviz_frame"                        value="$(arg rviz_frame)"/>
     <arg name="config"                            value="true"/>
-  </include> -->
+  </include>
 
 
 </launch>

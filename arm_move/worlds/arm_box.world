@@ -90,7 +90,7 @@
     <state world_name='default'>
       <sim_time>0 0</sim_time>
       <real_time>0 0</real_time>
-      <wall_time>1635742743 872886351</wall_time>
+      <wall_time>1635783448 229009276</wall_time>
       <iterations>0</iterations>
       <model name='RealSense_Box'>
         <pose>0.12 0 0.025 0 -0 0</pose>
@@ -239,14 +239,14 @@
     <model name='airpod'>
       <link name='link'>
         <inertial>
-          <mass>0.0015</mass>
+          <mass>0.001</mass>
           <inertia>
-            <ixx>4.9e-07</ixx>
+            <ixx>3.3e-07</ixx>
             <ixy>0</ixy>
             <ixz>0</ixz>
-            <iyy>9.9e-07</iyy>
+            <iyy>6.6e-07</iyy>
             <iyz>0</iyz>
-            <izz>7.3e-07</izz>
+            <izz>4.8e-07</izz>
           </inertia>
           <pose>0 0 0 0 -0 0</pose>
         </inertial>
@@ -290,8 +290,8 @@
           <surface>
             <friction>
               <ode>
-                <mu>50</mu>
-                <mu2>50</mu2>
+                <mu>100</mu>
+                <mu2>100</mu2>
                 <fdir1>0 0 0</fdir1>
                 <slip1>0</slip1>
                 <slip2>0</slip2>

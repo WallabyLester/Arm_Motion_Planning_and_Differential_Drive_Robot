@@ -59,6 +59,7 @@ add_service_files(
    FILES
    Follow.srv
    Step.srv
+   Reset.srv
 )
 
 ## Generate actions in the 'action' folder

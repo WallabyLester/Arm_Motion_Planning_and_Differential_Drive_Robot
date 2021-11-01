@@ -3,8 +3,6 @@
   <arg name="use_fake" default="false"/>
   <arg name="use_gazebo" default="false"/>
   <arg name="robot_model" default="px100"/>
-  <arg name="clear_waypoints" default="false"/>
-
 
   <include file="$(find arm_move)/launch/arm_box.launch" pass_all_args="true">
     <arg name="robot_model" value="$(arg robot_model)"/>
