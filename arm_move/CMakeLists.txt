@@ -9,9 +9,9 @@ project(arm_move)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
     geometry_msgs
-    moveit_msgs
-    moveit_commander
     message_generation
+    moveit_commander
+    moveit_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -57,8 +57,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate services in the 'srv' folder
 add_service_files(
    FILES
-   Step.srv
    Follow.srv
+   Step.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -71,8 +71,8 @@ add_service_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  moveit_msgs
   geometry_msgs
+  moveit_msgs
 )
 
 ################################################
@@ -106,10 +106,10 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
     CATKIN_DEPENDS
-    moveit_msgs
-    moveit_commander
     geometry_msgs
     message_runtime
+    moveit_commander
+    moveit_msgs
 )
 
 ###########

@@ -51,11 +51,9 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>moveit_msgs</depend>
   <depend>message_generation</depend>
-  <depend>message_runtime</depend>
+  <exec_depend>message_runtime</exec_depend>
   <depend>geometry_msgs</depend>
-  <depend>std_msgs</depend>
-  <exec_depend>interbotix_moveit</exec_depend>
-  <exec_depend>interbotix_moveit_interface</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
   <depend>moveit_commander</depend>
 
 

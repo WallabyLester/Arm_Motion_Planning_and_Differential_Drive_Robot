@@ -3,7 +3,7 @@
   <arg name="use_fake" default="false"/>
   <arg name="use_gazebo" default="false"/>
   <arg name="robot_model" default="px100"/>
-  
+  <arg name="clear_waypoints" default="false"/>
 
 
   <include file="$(find arm_move)/launch/arm_box.launch" pass_all_args="true">
@@ -11,15 +11,7 @@
     <arg name="dof" value="4"/>
     <arg name="use_actual" value="$(arg use_actual)"/>
     <arg name="use_fake" value="$(arg use_fake)"/>
-    <arg name="use_gazebo"
+    <arg name="use_gazebo" value="$(arg use_gazebo)"/>
   </include>
-
-  <rosparam command="load" file="$(find arm_move)/config/waypoints.yaml"/>
-
-  <node name="mover" type="mover" pkg="arm_move" ns="$(arg robot_model)" output="screen">
-    <remap from="/attached_collision_object" to="/px100/attached_collision_object"/>
-    <remap from="/collision_object" to="/px100/collision_object"/>
-    <param name="clear_waypoints" value="$(arg clear_waypoints)"/>
-  </node>
 
 </launch>
