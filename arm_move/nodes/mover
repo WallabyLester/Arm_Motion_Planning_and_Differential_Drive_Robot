@@ -97,13 +97,13 @@ class Mover():
     # def add_airpod(self):
     #     airpod_pose = PoseStamped()
     #     airpod_pose.header.frame_id = "world"
-    #     airpod_pose.pose.position.x = 0.20
+    #     airpod_pose.pose.position.x = 0.27
     #     airpod_pose.pose.position.y = 0.0
-    #     airpod_pose.pose.position.z = 0.025
+    #     airpod_pose.pose.position.z = 0.0275
     #     airpod_pose.pose.orientation.w = 1.0
     #     airpod_name = "airpod"
     #     while not self.wait_for_state_update(airpod_name, box_is_known=True):
-    #         self.scene.add_box(airpod_name, airpod_pose, size=(1.0, 0.62, 0.05))
+    #         self.scene.add_box(airpod_name, airpod_pose, size=(0.07, 0.03, 0.055))
 
     def add_realsense(self):
         box_pose = PoseStamped()
