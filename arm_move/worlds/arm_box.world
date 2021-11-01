@@ -90,13 +90,13 @@
     <state world_name='default'>
       <sim_time>0 0</sim_time>
       <real_time>0 0</real_time>
-      <wall_time>1635708792 129205530</wall_time>
+      <wall_time>1635725340 491064563</wall_time>
       <iterations>0</iterations>
       <model name='RealSense_Box'>
-        <pose>0.15 0 0.025 0 -0 1.57</pose>
+        <pose>0.12 0 0.025 0 -0 1.57</pose>
         <scale>1 1 1</scale>
         <link name='link_1'>
-          <pose>0.15 0 0.025 0 -0 1.57</pose>
+          <pose>0.12 0 0.025 0 -0 1.57</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -221,7 +221,7 @@
     </model>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>0.36042 -1.21091 0.237426 0 0.143643 1.7602</pose>
+        <pose>0.073079 -1.19898 0.377355 0 0.287643 1.5482</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>

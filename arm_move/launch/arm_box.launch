@@ -1,10 +1,23 @@
 <launch>
-  <arg name="world_name" value="$(find arm_move)/worlds/arm_box.world"/>
+  <arg name="use_actual" default="false"/>
+  <arg name="use_fake" default="false"/>
   <arg name="robot_model" default="px100"/>
-  
+  <arg name="clear_waypoints" default="false"/>
+  <arg name="world_name" value="$(find arm_move)/worlds/arm_box.world"/>
 
   <include file="$(find interbotix_xsarm_moveit)/launch/xsarm_moveit.launch" pass_all_args="true">
-    <arg name="use_gazebo" default="true"/>
+    <arg name="robot_model" value="$(arg robot_model)"/>
+    <arg name="dof" value="4"/>
+    <arg name="use_actual" value="$(arg use_actual)"/>
+    <arg name="use_fake" value="$(arg use_fake)"/>
   </include>
+
+  <rosparam command="load" file="$(find arm_move)/config/waypoints.yaml"/>
+
+  <node name="mover" type="mover" pkg="arm_move" ns="$(arg robot_model)" output="screen">
+    <remap from="/attached_collision_object" to="/px100/attached_collision_object"/>
+    <remap from="/collision_object" to="/px100/collision_object"/>
+    <param name="clear_waypoints" value="$(arg clear_waypoints)"/>
+  </node>
 
 </launch>

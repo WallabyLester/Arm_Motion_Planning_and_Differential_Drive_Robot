@@ -54,8 +54,8 @@
   <depend>message_runtime</depend>
   <depend>geometry_msgs</depend>
   <depend>std_msgs</depend>
-  <exec_depend>interbotix_xsarm_moveit</exec_depend>
-  <exec_depend>interbotix_xsarm_moveit_interface</exec_depend>
+  <exec_depend>interbotix_moveit</exec_depend>
+  <exec_depend>interbotix_moveit_interface</exec_depend>
   <depend>moveit_commander</depend>
 
 
