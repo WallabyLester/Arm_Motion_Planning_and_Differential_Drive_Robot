@@ -25,7 +25,7 @@ The launch files are listed below:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![px100_rviz](gifs/px100_rviz.gif "px100_rviz.gif")
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`use_gazebo:=true` ~ use to run the Gazebo simulation with a world file containing the robot, realsense box, and small object to be grasped
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`use_gazebo:=true` ~ use to run the Gazebo simulation with a world file containing the robot, realsense box, and small object to be &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grasped
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![px100_rviz](gifs/px100_gazebo.gif "px100_gazebo.gif")
 
