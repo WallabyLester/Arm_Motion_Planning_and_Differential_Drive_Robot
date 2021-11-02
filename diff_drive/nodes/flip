@@ -3,28 +3,26 @@
 Publishes velocity messages to make a robot flip over itself.
 
 PUBLISHERS: 
+    + diff/cmd_vel (geometry_msgs/Twist) ~ the twist data for the robot
     
-
 SUBSCRIBERS:
+    + /diff/odom (nav_msgs/Odometry) ~ odometry data from for the robot 
 
 PARAMETERS:
-    
+    + /pub_freq ~ frequency to publish commands
+    + /vel ~ velocity for robot to move at
 
 """
 
 import rospy
 from nav_msgs.msg import Odometry 
-import tf2_ros
-from tf_conversions import transformations
-from geometry_msgs.msg import TransformStamped, Twist, Vector3
-from sensor_msgs.msg import JointState
+from geometry_msgs.msg import Twist, Vector3
 
 class Flip():
-    """ Publish velocity messages to the robot at a fixed rate
-    
+    """ Publish velocity messages to the robot at a fixed rate to make it flip
     """
     def __init__(self):
-        self.odom = rospy.Subscriber('/diff/odom', Odometry, self.callback)
+        self.odom = rospy.Subscriber('/diff/odom', Odometry, self.odom_callback)
         self.pub = rospy.Publisher("diff/cmd_vel", Twist, queue_size=10)
         self.pub_freq = rospy.get_param("pub_freq")
         self.rate = rospy.Rate(self.pub_freq)
@@ -37,13 +35,13 @@ class Flip():
         self.orient_z = 0
         self.orient_w = 0
         
-    def callback(self, data):
+    def odom_callback(self, data):
         """ Callback function for diff/odom topic
 
         Subscribes to the odometry of the robot 
 
         Args:
-            data: linear and twist data from the robot 
+            data (Odom) : linear and twist data from the robot 
         
         """
         self.x = data.pose.pose.position.x
@@ -55,24 +53,46 @@ class Flip():
         self.orient_w = data.pose.pose.orientation.w
 
     def movement(self, x):
+        """ Function to publish movement twist data
+
+        Receives velocity and publishes the movement commands to the robot 
+
+        Args: x (velocity) : the linear x velocity to be used 
+
+        
+        """
         movement = Twist(linear = Vector3(x = x, y=0, z=0), angular = Vector3(x=0,y=0,z=0))
         self.pub.publish(movement)
         self.rate.sleep()
 
     def stop(self):
+        """ Function to publish stop twist data 
+
+        Publishes zero velocity to stop the robot when called 
+        
+        """
         stop = Twist(linear = Vector3(x = 0, y=0, z=0), angular = Vector3(x=0,y=0,z=0))
         self.pub.publish(stop)
         self.rate.sleep()
 
     def move(self):
+        """ Commands the robot direction to move 
+
+        Calls movement and stop functions depending on x position of the robot. Positive velocity for 
+        original forward movement, negative forward velocity once it flips. Sleeps in between to 
+        allow time for the robot to flip
+        
+        """
         while not rospy.is_shutdown() and self.x < 10.5:
-            rospy.logdebug(f"pose x: {self.x}, pose y: {self.y}, pose z: {self.z}, orientation x: {self.orient_x}, orientation y: {self.orient_y}, orientation z: {self.orient_z}, orientation w: {self.orient_w}")
+            rospy.logdebug(f"pose x: {self.x}, pose y: {self.y}, pose z: {self.z}, orientation x: {self.orient_x}, \
+                            orientation y: {self.orient_y}, orientation z: {self.orient_z}, orientation w: {self.orient_w}")
             self.movement(self.vel)
         self.stop()
         rospy.sleep(1)
 
         while not rospy.is_shutdown() and self.x > 4.0:
-            rospy.logdebug(f"pose x: {self.x}, pose y: {self.y}, pose z: {self.z}, orientation x: {self.orient_x}, orientation y: {self.orient_y}, orientation z: {self.orient_z}, orientation w: {self.orient_w}")
+            rospy.logdebug(f"pose x: {self.x}, pose y: {self.y}, pose z: {self.z}, orientation x: {self.orient_x}, \
+                            orientation y: {self.orient_y}, orientation z: {self.orient_z}, orientation w: {self.orient_w}")
             self.movement(-self.vel)
         self.stop()
         rospy.sleep(1)
