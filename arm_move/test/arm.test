@@ -1,0 +1,8 @@
+<launch>
+    <include file="$(find arm_move)/launch/arm.launch">
+        <arg name="use_fake" value="true"/>
+    </include>
+
+    <test test-name="mover_test" type="mover_test" pkg="arm_move" />
+
+</launch>

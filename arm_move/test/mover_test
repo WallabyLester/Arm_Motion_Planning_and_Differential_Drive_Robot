@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+"""
+Node to test the mover reset and step services 
+
+SERVICES:
+
+"""
+import rospy
+import unittest
+from arm_move.srv import Reset, Step
+
