@@ -10,9 +10,8 @@ The robot moves in a straight line flipping over in order to change directions.
 To launch the package use the roslaunch command `roslaunch diff_drive <launch_file>`.
 
 The launch files are listed below:
-`ddrive_rviz.launch` - Launch file for visualizing the robot in RVIZ. Add the argument `gui:=true` in order to launch the `joint_state_publisher_gui` to move the wheels. 
 
-There is also an optional rviz config for viewing the robot with the odom frame as the fixed frame to see where the robot believes it to be based on its wheel odometry. Uncomment the line for `ddrive_odom.rviz` in the `ddrive_rviz.launch` file and comment out the `ddrive.rviz` line to use this config. 
+`ddrive_rviz.launch` - Launch file for visualizing the robot in RVIZ. Add the argument `gui:=true` in order to launch the `joint_state_publisher_gui` to move the wheels. There is also an optional rviz config for viewing the robot with the odom frame as the fixed frame to see where the robot believes it to be based on its wheel odometry. Uncomment the line for `ddrive_odom.rviz` in the `ddrive_rviz.launch` file and comment out the `ddrive.rviz` line to use this config. 
 
 `ddrive.launch` - Launch file for running the robot in gazebo. The simulation is started paused, so unpause when you would like the simulation to run.
 
