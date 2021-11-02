@@ -33,11 +33,39 @@ This package contains a preset waypoints list if you would like to move the robo
 
 To move the robot and set the scene use the services below:
 
-`rosservice call /px100/reset` ~ use to reset the scene and place the realsense object at user-input pose values. It includes an optional argument `clr_waypoints` boolean value to clear waypoints server if desired. 
+`rosservice call /px100/reset` ~ use to reset the scene and place the realsense object at user-input pose values. It includes an optional argument `clr_waypoints` boolean value to clear waypoints server if desired.
+
+Sample call matching the gazebo and rviz placement of the realsense box: 
+```
+position: 
+    x: 0.12 
+    y: 0.0
+    z: 0.025
+orientation: 
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+clr_waypoints: false
+```
 
 `rosservice call /px100/step` ~ use to move the robot to a specific user-input pose end effector goal position. It will append the waypoint to the parameter server if successful. A MoveItErrorCode will be returned: `valid=1` and `non-valid=-1`. 
 
-`rosservice call /px100/follow` ~ use to make the robot follow the waypoints in the parameter server. If run without clearing the server it will follow the preset waypoints. If the `clr_waypoints` argument was set to true you will have to run the `/px100/step` service first to add waypoints to the parameter server. Use the argument `repeat:=true` to make the robot repeat the cycle or `repeat:=false` to run the cycle only once.
+Sample call of valid waypoint: 
+```
+position: 
+    x: 0.074819
+    y: 0.0
+    z: 0.23243
+orientation: 
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+gripper: false
+```
+
+`rosservice call /px100/follow` ~ use to make the robot follow the waypoints in the parameter server. If run without clearing the server it will follow the preset waypoints. If the `clr_waypoints` argument was set to true you will have to run the `/px100/step` service first to add waypoints to the parameter server. Use the argument `"repeat:true"` to make the robot repeat the cycle or `"repeat:false"` to run the cycle only once.
 
 This package features a rostest option to test the code's ability to output the correct MoveItErrorCode. The test makes use of the `/px100/reset` and `/px100/step` services. The test returns `SUCCESS` if the error code matches a non-valid and valid pose. Use `catkin_make run_tests` from the root of the workspace to run these tests.
 
