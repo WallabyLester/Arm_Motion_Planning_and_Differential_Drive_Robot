@@ -3,9 +3,98 @@
 Node to test the mover reset and step services 
 
 SERVICES:
+    /px100/reset (arm_move/Reset) ~ 
+    /px100/step (arm_move/Step) ~ takes in a specified pose, plans, and moves the robot to 
+                                  store valid waypoints and return an error code for success or failure 
 
 """
 import rospy
 import unittest
 from arm_move.srv import Reset, Step
+from geometry_msgs.msg import Pose
+from copy import deepcopy
 
+class MoverTest(unittest.TestCase):
+    """ Runs test on the mover node services
+
+    """
+    def __init__(self, *args):
+        super(MoverTest, self).__init__(*args)
+
+    def test_bad_step(self):
+        
+        reset_msg = Reset()
+        pose = Pose()
+        pose.position.x = 0.12
+        pose.position.y = 0.0
+        pose.position.z = 0.025
+        pose.orientation.x = 0.0
+        pose.orientation.y = 0.0
+        pose.orientation.z = 0.0
+        pose.orientation.w = 1.0
+        reset_msg.clr_waypoints = False
+        reset_msg.pose = pose
+
+        rospy.wait_for_service('/px100/reset')
+        reset = rospy.ServiceProxy('/px100/reset', Reset)
+        reset.call(reset_msg.pose, reset_msg.clr_waypoints)
+
+        step_msg = Step()
+        pose = Pose()
+        pose.position.x = 0.1
+        pose.position.y = 0.0
+        pose.position.z = -0.1
+        pose.orientation.x = 0.0
+        pose.orientation.y = 0.0
+        pose.orientation.z = 0.0
+        pose.orientation.w = 1.0
+        step_msg.gripper = False
+        step_msg.pose = pose
+
+        rospy.wait_for_service('/px100/step')
+        step = rospy.ServiceProxy('/px100/step', Step)
+        error_code = step.call(step_msg.pose, step_msg.gripper)
+
+        self.assertEqual(error_code.code.val, -1)
+
+
+    def test_good_step(self):
+        
+        reset_msg = Reset()
+        pose = Pose()
+        pose.position.x = 0.12
+        pose.position.y = 0.0
+        pose.position.z = 0.025
+        pose.orientation.x = 0.0
+        pose.orientation.y = 0.0
+        pose.orientation.z = 0.0
+        pose.orientation.w = 1.0
+        reset_msg.clr_waypoints = False
+        reset_msg.pose = pose
+
+        rospy.wait_for_service('/px100/reset')
+        reset = rospy.ServiceProxy('/px100/reset', Reset)
+        reset.call(reset_msg.pose, reset_msg.clr_waypoints)
+
+        step_msg = Step()
+        pose = Pose()
+        pose.position.x = 0.074819
+        pose.position.y = 0.0
+        pose.position.z = 0.23243
+        pose.orientation.x = 0.0
+        pose.orientation.y = 0.0
+        pose.orientation.z = 0.0
+        pose.orientation.w = 1.0
+        step_msg.gripper = True
+        step_msg.pose = pose
+
+        rospy.wait_for_service('/px100/step')
+        step = rospy.ServiceProxy('/px100/step', Step)
+        error_code = step.call(step_msg.pose, step_msg.gripper)
+
+        self.assertEqual(error_code.code.val, 1)
+
+if __name__ == "__main__":
+    import rostest 
+    rospy.init_node('mover_test')
+    rostest.rosrun('arm_move', 'mover_test', MoverTest)
