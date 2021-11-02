@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 """
-Node to test the mover reset and step services 
+Test node to test the mover node's reset and step services
 
 SERVICES:
-    /px100/reset (arm_move/Reset) ~ 
-    /px100/step (arm_move/Step) ~ takes in a specified pose, plans, and moves the robot to 
-                                  store valid waypoints and return an error code for success or failure 
+    /px100/reset (arm_move/Reset) ~ moves the robot to the home position and creates/moves a RealSense Box into the scene.
+                                    Offers the ability to clear the waypoints server 
+    /px100/step (arm_move/Step) ~ moves the robot to a user-specified position with a gripper state (open/closed). 
+                                  If the motion plan succeeds, stores the waypoints in the parameter server
 
 """
 import rospy
@@ -15,14 +16,16 @@ from geometry_msgs.msg import Pose
 from copy import deepcopy
 
 class MoverTest(unittest.TestCase):
-    """ Runs test on the mover node services
+    """ Runs tests on the mover node services
 
     """
     def __init__(self, *args):
         super(MoverTest, self).__init__(*args)
 
     def test_bad_step(self):
+        """ Function to ensure step service returns a unsuccessful planning error code with a non-valid pose
         
+        """
         reset_msg = Reset()
         pose = Pose()
         pose.position.x = 0.12
@@ -59,7 +62,9 @@ class MoverTest(unittest.TestCase):
 
 
     def test_good_step(self):
+        """ Function to ensure step service returns a successful planning error code with a valid pose
         
+        """
         reset_msg = Reset()
         pose = Pose()
         pose.position.x = 0.12

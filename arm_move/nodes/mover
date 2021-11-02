@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 """
-    
+Uses moveit to move robot arm with collision objects and a target for pickup
+
 SERVICES:
+    + /reset (Reset) ~ moves the robot to the home position and creates/moves a RealSense Box into the scene.
+                       Offers the ability to clear the waypoints server 
+    + /step (Step) ~ moves the robot to a user-specified position with a gripper state (open/closed). 
+                     If the motion plan succeeds, stores the waypoints in the parameter server
+    + /follow (Follow) ~ has the robot move to each waypoint in the parameter server, either once or indefinitely
 
 PARAMETERS:
+    + /waypoints ~ initially saved waypoints for robot to follow which can be cleared/appended to with the step 
+                   service
 
 """
 
-from logging import error
 import sys
 import rospy
 import moveit_commander
@@ -17,7 +24,7 @@ from arm_move.srv import Step, Follow, FollowResponse, Reset, ResetResponse
 
 
 class Mover():
-    """
+    """ Moves interbotix arm with moveit planning and commands
     """
     def __init__(self):
         super(Mover, self).__init__()
@@ -29,49 +36,52 @@ class Mover():
         self.gripper_group = moveit_commander.MoveGroupCommander("interbotix_gripper")
         self.planning_frame = self.move_group.get_planning_frame()
         self.waypoints = rospy.get_param("/waypoints")
-        # self.clear_waypoints = rospy.get_param("~clear_waypoints")
         self.reset = rospy.Service("reset", Reset, self.reset_callback)
         self.step = rospy.Service("step", Step, self.step_callback)
         self.follow = rospy.Service("follow", Follow, self.follow_callback)
 
         self.add_table()
-        # self.add_airpod()
+        # self.add_airpod()     # use to add small collision object 
     
     def wait_for_state_update(self, box_name, box_is_known=False, box_is_attached=False, timeout=4):
-        """ Description
+        """ Waits until changes are reflected in object lists 
 
-        More description
+        Ensures that collision updates are made in case the python node dies before publishing.
+        Integrated from Interbotix MoveIt Python Move Group Tutorials
 
         Args: 
+            box_name (string) : name of the box being added 
             box_is_known (bool) : if box is in get_known_object_names()
             box_is_attached (bool) : if box is in get_attached_objects()
             timeout (int) : time limit
+
+        Returns:
+            False (bool) : false return if the while loop is exited without returning (a timeout)
         
         """
         start = rospy.get_time()
         seconds = rospy.get_time()
 
         while (seconds - start < timeout) and not rospy.is_shutdown():
-            # Test if the box is in attached objects
             attached_objects = self.scene.get_attached_objects([box_name])
             is_attached = len(attached_objects.keys()) > 0
 
-            # Test if the box is in the scene.
-            # Note that attaching the box will remove it from known_objects
             is_known = box_name in self.scene.get_known_object_names()
 
-            # Test if we are in the expected state
             if (box_is_attached == is_attached) and (box_is_known == is_known):
                 return True
 
-            # Sleep so that we give other threads time on the processor
             rospy.sleep(0.1)
             seconds = rospy.get_time()
 
-        # If we exited the while loop without returning then we timed out
         return False
 
     def add_table(self):
+        """ Adds table to planning scene 
+
+        Places table collision object based on the world frame
+
+        """
         table_pose = PoseStamped()
         table_pose.header.frame_id = "world"
         table_pose.pose.position.x = 0.25
@@ -82,19 +92,31 @@ class Mover():
         while not self.wait_for_state_update(table_name, box_is_known=True):
             self.scene.add_box(table_name, table_pose, size=(1.0, 0.62, 0.05))
 
-    # use to add small collision object in rviz for viewing
-    # def add_airpod(self):
-    #     airpod_pose = PoseStamped()
-    #     airpod_pose.header.frame_id = "world"
-    #     airpod_pose.pose.position.x = 0.27
-    #     airpod_pose.pose.position.y = 0.0
-    #     airpod_pose.pose.position.z = 0.0275
-    #     airpod_pose.pose.orientation.w = 1.0
-    #     airpod_name = "airpod"
-    #     while not self.wait_for_state_update(airpod_name, box_is_known=True):
-    #         self.scene.add_box(airpod_name, airpod_pose, size=(0.07, 0.03, 0.055))
+    def add_airpod(self):
+        """ Adds small object to planning scene
+
+        Places an approximate airpod case sized collision object to the scene for viewing 
+        location of target object if desired
+        
+        """
+        airpod_pose = PoseStamped()
+        airpod_pose.header.frame_id = "world"
+        airpod_pose.pose.position.x = 0.27
+        airpod_pose.pose.position.y = 0.0
+        airpod_pose.pose.position.z = 0.0275
+        airpod_pose.pose.orientation.w = 1.0
+        airpod_name = "airpod"
+        while not self.wait_for_state_update(airpod_name, box_is_known=True):
+            self.scene.add_box(airpod_name, airpod_pose, size=(0.07, 0.03, 0.055))
 
     def add_realsense(self, pose):
+        """ Adds realsense to planning scene
+
+        Places realsense collision object in the planning scene 
+
+        Args:
+            pose (Pose) : pose data for location to place the object 
+        """
         box_pose = PoseStamped(pose=pose)
         box_pose.header.frame_id = "world"
         box_name = "realsense_box"
@@ -102,6 +124,17 @@ class Mover():
             self.scene.add_box(box_name, box_pose, size=(0.09, 0.14, 0.05))
 
     def reset_callback(self, data):
+        """ Callback for the reset service 
+
+        Calls the add_realsense function to add collision object based on user-input
+
+        Args:
+            data (Reset) : pose data from user input to send to add_realsense function
+
+        Returns:
+            ResetResponse (Reset) : empty response 
+        
+        """
         self.add_realsense(data.pose)
         self.move_group.set_named_target("Home")
         self.move_group.go()
@@ -115,6 +148,18 @@ class Mover():
         return ResetResponse()
 
     def step_callback(self, data):
+        """ Callback for the step service 
+
+        Moves the robot based on user-input pose values
+
+        Args:
+            data (Step) : pose data from user input to use with moveit planning 
+
+        Returns:
+            error_code (Step) : MoveItErrorCodes message which signifies success or failure 
+
+        """
+
         pose = data.pose
         gripper = data.gripper
 
@@ -141,10 +186,20 @@ class Mover():
         return error_code
 
     def follow_callback(self, data):
+        """ Callback function for the follow service 
+
+        Moves the robot to follow waypoints in the parameter server
+
+        Args: 
+            data (Follow) : boolean user-input for repeating the cycle or running just once
+
+        Returns:
+            FollowResponse (Follow) : empty response
+        
+        """
         data = data
         
         for waypoint in self.waypoints:
-            # print(f"waypoint = {waypoint}")
             pose = list_to_pose(waypoint[0])
             gripper = waypoint[1]
             self.move_group.set_pose_target(pose)

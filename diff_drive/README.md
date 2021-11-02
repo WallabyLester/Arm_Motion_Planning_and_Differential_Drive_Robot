@@ -16,7 +16,7 @@ The launch files are listed below:
 `ddrive.launch` - Launch file for running the robot in gazebo. The simulation is started paused, so unpause when you would like the simulation to run.
 
 ## Configuration Instructions
-To adjust the robot parameters, use the ddrive.yaml file. The file takes parameters for box:length, width, height, and mass, wheel: height, radius, and mass, and caster: radius and mass. 
+To adjust the robot parameters, use the `ddrive.yaml` file. The file takes parameters for box: length, width, height, and mass, wheel: height, radius, and mass, and caster: radius and mass. 
 
 The yaml file also takes the pub frequency and velocity used for the movement commands. Increase the velocity if you would like the robot to drive faster. 
 

@@ -3,7 +3,7 @@
 Publishes velocity messages to make a robot flip over itself.
 
 PUBLISHERS: 
-    + diff/cmd_vel (geometry_msgs/Twist) ~ the twist data for the robot
+    + /diff/cmd_vel (geometry_msgs/Twist) ~ the twist data for the robot
     
 SUBSCRIBERS:
     + /diff/odom (nav_msgs/Odometry) ~ odometry data from for the robot 
