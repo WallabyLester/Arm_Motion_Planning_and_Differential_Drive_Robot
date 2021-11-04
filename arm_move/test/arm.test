@@ -1,6 +1,8 @@
 <launch>
-    <include file="$(find arm_move)/launch/arm.launch">
+    <include file="$(find arm_move)/launch/arm.launch" pass_all_args="true">
         <arg name="use_fake" value="true"/>
+        <arg name="use_rviz" value="false"/>
+        <arg name="use_moveit_rviz" value="false"/>
     </include>
 
     <test test-name="mover_test" type="mover_test" pkg="arm_move" />
