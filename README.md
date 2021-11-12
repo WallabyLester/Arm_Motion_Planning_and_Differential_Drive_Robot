@@ -1,4 +1,4 @@
-# HOMEWORK 3: GAZEBO DIFFERENTIAL DRIVE AND MOTION PLANNING 
+# ARM MOTION PLANNING AND GAZEBO DIFFERENTIAL DRIVE
 
 ## Repository Contents
 This repository contains two packages: 
